@@ -18,7 +18,7 @@ import com.roughike.bottombar.BottomBar
 class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener {
     override val numberOfRootFragments: Int = 5
 
-    private val fragNavController: FragNavController = FragNavController(supportFragmentManager, R.id.container)
+    val fragNavController: FragNavController = FragNavController(supportFragmentManager, R.id.container)
 
     private lateinit var bottomBar: BottomBar
 
@@ -31,7 +31,6 @@ class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
         fragNavController.apply {
             transactionListener = this@BottomTabsActivity
             rootFragmentListener = this@BottomTabsActivity
-            createEager = true
             fragNavLogger = object : FragNavLogger {
                 override fun error(message: String, throwable: Throwable) {
                     Log.e(TAG, message, throwable)
@@ -39,7 +38,6 @@ class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
             }
 
             defaultTransactionOptions = FragNavTransactionOptions.newBuilder().customAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.slide_in_from_left, R.anim.slide_out_to_right).build()
-            fragmentHideStrategy = FragNavController.DETACH_ON_NAVIGATE_HIDE_ON_SWITCH
 
             navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
                 override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
@@ -74,9 +72,9 @@ class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        fragNavController.onSaveInstanceState(outState!!)
+        fragNavController.onSaveInstanceState(outState)
 
     }
 

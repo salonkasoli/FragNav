@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
@@ -14,8 +15,14 @@ import com.ncapdevi.sample.R
  */
 class FavoritesFragment : BaseFragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.wtf("lol", "FAV on create")
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.wtf("lol", "FAV on view created")
         super.onViewCreated(view, savedInstanceState)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -42,6 +49,11 @@ class FavoritesFragment : BaseFragment() {
             mFragmentNavigation.pushFragment(newInstance(mInt + 1), list)
         }
         btn.text = """${javaClass.simpleName} $mInt"""
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.wtf("lol", "FAV on destroy view created")
     }
 
     companion object {

@@ -390,9 +390,14 @@ class FragNavController constructor(private val fragmentManger: FragmentManager,
      *
      * @param tabIndex Index of tab that needs to be cleared
      * @param transactionOptions Transaction options to be displayed
+     * @param fullyClearStack Should stack be 100% cleared (with root fragment)?
      */
     @JvmOverloads
-    fun clearStack(tabIndex: Int, transactionOptions: FragNavTransactionOptions? = defaultTransactionOptions) {
+    fun clearStack(
+            tabIndex: Int,
+            transactionOptions: FragNavTransactionOptions? = defaultTransactionOptions,
+            fullyClearStack: Boolean = false
+    ) {
         if (tabIndex == NO_TAB) {
             return
         }
@@ -401,13 +406,14 @@ class FragNavController constructor(private val fragmentManger: FragmentManager,
         val fragmentStack = fragmentStacksTags[tabIndex]
 
         // Only need to start popping and reattach if the stack is greater than 1
-        if (fragmentStack.size > 1) {
+        if (fragmentStack.size > 1 || fullyClearStack) {
             //Only animate if we're clearing the current stack
             val shouldAnimate = tabIndex == currentStackIndex
             val ft = createTransactionWithOptions(transactionOptions,true, shouldAnimate)
 
             //Pop all of the fragments on the stack and remove them from the FragmentManager
-            while (fragmentStack.size > 1) {
+            val minStackSize = if (fullyClearStack) 0 else 1
+            while (fragmentStack.size > minStackSize) {
                 val fragment = getFragment(fragmentStack.pop())
                 if (fragment != null) {
                     ft.removeSafe(fragment)

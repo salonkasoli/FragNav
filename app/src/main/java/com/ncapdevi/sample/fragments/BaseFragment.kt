@@ -2,6 +2,7 @@ package com.ncapdevi.sample.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,12 +30,13 @@ open class BaseFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.wtf("lol", "BASE on create view")
         return inflater.inflate(R.layout.fragment_main, container, false)?.apply {
             btn = findViewById(R.id.button)
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is FragmentNavigation) {
             mFragmentNavigation = context
